@@ -1,0 +1,104 @@
+{
+  "name": "lineamientos-de-codigo",
+  "displayName": "Lineamientos de Código",
+  "description": "Extensión para formatear código automáticamente según lineamientos de estilo, asegurando una sintaxis limpia y consistente en JavaScript y HTML.",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.98.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "lineamientosContainer",
+          "title": "Lineamientos de Código",
+          "icon": "assets/icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "lineamientosContainer": [
+        {
+          "id": "lineamientosJavaScriptView",
+          "name": "Formateador de JavaScript",
+          "icon": "assets/icon.svg"
+        },
+        {
+          "id": "lineamientosHTMLView",
+          "name": "Formateador de HTML",
+          "icon": "assets/icon.svg"
+        }
+      ]
+    },
+    "viewsWelcome": [
+      {
+        "view": "lineamientosJavaScriptView",
+        "contents": "Puedes usar estas herramientas:\n[Formatear JS - Archivo Completo](command:lineamientos-de-codigo.formatJsCode)\n[Formatear JS - Selección](command:lineamientos-de-codigo.formatJsSelection)",
+        "when": "config.git.enabled && git.state == initialized && workbenchState == empty"
+      },
+      {
+        "view": "lineamientosHTMLView",
+        "contents": "Puedes usar estas herramientas:\n[Formatear HTML - Archivo Completo](command:lineamientos-de-codigo.formatHtmlCode)\n[Formatear HTML - Selección](command:lineamientos-de-codigo.formatHtmlSelection)",
+        "when": "config.git.enabled && git.state == initialized && workbenchState == empty"
+      }
+    ],
+    "commands": [
+      {
+        "command": "lineamientos-de-codigo.formatJsCode",
+        "title": "Clever: JS - Formatear archivo completo"
+      },
+      {
+        "command": "lineamientos-de-codigo.formatJsSelection",
+        "title": "Clever: JS - Formatear Selección"
+      },
+      {
+        "command": "lineamientos-de-codigo.formatHtmlCode",
+        "title": "Clever: HTML - Formatear archivo completo"
+      },
+      {
+        "command": "lineamientos-de-codigo.formatHtmlSelection",
+        "title": "Clever: HTML - Formatear Selección"
+      },
+      {
+        "command": "lineamientos-de-codigo.verificarLineamientos",
+        "title": "Clever: JS - Verificar Lineamientos"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run package",
+    "compile": "npm run check-types && npm run lint && node esbuild.js",
+    "watch": "npm-run-all -p watch:*",
+    "watch:esbuild": "node esbuild.js --watch",
+    "watch:tsc": "tsc --noEmit --watch --project tsconfig.json",
+    "package": "npm run check-types && npm run lint && node esbuild.js --production",
+    "compile-tests": "tsc -p . --outDir out",
+    "watch-tests": "tsc -p . -w --outDir out",
+    "pretest": "npm run compile-tests && npm run compile && npm run lint",
+    "check-types": "tsc --noEmit",
+    "lint": "eslint src",
+    "test": "vscode-test"
+  },
+  "devDependencies": {
+    "@types/js-beautify": "^1.14.3",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "20.x",
+    "@types/vscode": "^1.98.0",
+    "@typescript-eslint/eslint-plugin": "^8.25.0",
+    "@typescript-eslint/parser": "^8.25.0",
+    "@vscode/test-cli": "^0.0.10",
+    "@vscode/test-electron": "^2.4.1",
+    "esbuild": "^0.25.0",
+    "eslint": "^9.21.0",
+    "npm-run-all": "^4.1.5",
+    "typescript": "^5.7.3"
+  },
+  "dependencies": {
+    "js-beautify": "^1.15.4"
+  }
+}
