@@ -52,15 +52,15 @@
     "commands": [
       {
         "command": "lineamientos-de-codigo.formatJsCode",
-        "title": "Clever: JS - Formatear archivo completo"
+        "title": "Clever: Formatear archivo JavaScript"
       },
       {
         "command": "lineamientos-de-codigo.formatJsSelection",
-        "title": "Clever: JS - Formatear Selección"
+        "title": "Clever: Formatear selección JavaScript"
       },
       {
         "command": "lineamientos-de-codigo.toggleValidacion",
-        "title": "Clever: Activar/Desactivar validación de lineamientos"
+        "title": "Clever: Toggle de validación de lineamientos"
       }
     ]
   },
