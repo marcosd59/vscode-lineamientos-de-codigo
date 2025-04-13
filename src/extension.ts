@@ -173,20 +173,119 @@ export function activate(context: vscode.ExtensionContext) {
     }
   );
 
-  context.subscriptions.push(
-    formatJsWholeFile,
+  const formatJsSelection = vscode.commands.registerCommand(
+    "lineamientos-de-codigo.formatJsSelection",
+    async () => {
+      const editor = vscode.window.activeTextEditor;
+      if (!editor) {
+        vscode.window.showErrorMessage("No hay un editor activo.");
+        return;
+      }
 
-    vscode.workspace.onDidChangeTextDocument((event) => {
-      verificarLineamientosJs(event.document);
-    }),
+      const document = editor.document;
+      if (document.languageId !== "javascript") {
+        vscode.window.showErrorMessage(
+          "Este formateador solo funciona con archivos JavaScript (.js)."
+        );
+        return;
+      }
 
-    vscode.workspace.onDidSaveTextDocument((document) => {
-      verificarLineamientosJs(document);
-    }),
+      const selection = editor.selection;
+      const selectedText = document.getText(selection);
 
-    vscode.workspace.onDidOpenTextDocument((document) => {
-      verificarLineamientosJs(document);
-    })
+      if (!selectedText.trim()) {
+        vscode.window.showWarningMessage("No hay código seleccionado.");
+        return;
+      }
+
+      try {
+        let formattedCode = beautify(selectedText, beautifyOptions);
+
+        formattedCode = formattedCode.replace(
+          /^(\s*)},\s*\n(\s*)([\w$]+:\s*(async\s+)?function(\s+\w+)?\s*\(|(async\s+)?[\w$]+\s*\()/gm,
+          "$1},\n\n$2$3"
+        );
+
+        formattedCode = formattedCode.replace(
+          /^(\s*[\w$]+:\s*function\s*\([\s\S]*?\}\s*),\s*\n(\s*[\w$]+:)/gm,
+          "$1,\n\n$2"
+        );
+
+        formattedCode = formattedCode.replace(
+          /^(\s*[\w$]+:\s*(?:async\s+)?function(?:\s+\w+)?\([\s\S]*?\}\s*),\s*\n(\s*[\w$]+:)/gm,
+          "$1,\n\n$2"
+        );
+
+        formattedCode = formattedCode.replace(
+          /([^\n])\n(\s*(var|let|const)\s+\w+\s*=\s*new\s+Vue\s*\()/g,
+          "$1\n\n$2"
+        );
+
+        formattedCode = formattedCode.replace(
+          /if\s*\(\s*\n([\s\S]*?)\n\s*\)/gm,
+          (match, condiciones) => {
+            const oneLiner = condiciones
+              .split("\n")
+              .map((line: string) => line.trim())
+              .join(" ")
+              .replace(/\s+/g, " ");
+            return `if(${oneLiner})`;
+          }
+        );
+
+        formattedCode = formattedCode.replace(
+          /(:\s*(?:async\s+)?function\s*)\(\s*\n([\s\S]*?)\n\s*\)/gm,
+          (match, funcPrefix, argsBloque) => {
+            const argumentos = argsBloque
+              .split("\n")
+              .map((line: string) => line.trim().replace(/,$/, ""))
+              .filter((line: string) => line.length > 0)
+              .join(", ");
+            return `${funcPrefix}(${argumentos})`;
+          }
+        );
+
+        formattedCode = formattedCode.replace(
+          /\b(let|const|var)\s+([a-zA-Z_$][a-zA-Z0-9_$]*)\s*=\s*\n\s*([\s\S]*?);/gm,
+          (match, tipo, nombre, expresion) => {
+            const unaLinea = expresion
+              .split("\n")
+              .map((line: string) => line.trim())
+              .join(" ")
+              .replace(/\s+/g, " ");
+            return `${tipo} ${nombre} = ${unaLinea};`;
+          }
+        );
+
+        formattedCode = formattedCode.replace(
+          /^(\s*)([^\n;]+=\s*[^\n?:]+)\?\s*\n\s*([^\n]+)\s*:\s*\n\s*([^\n;]+);/gm,
+          (match, indent, condicion, valorTrue, valorFalse) => {
+            const compactado = `${condicion.trim()} ? ${valorTrue.trim()} : ${valorFalse.trim()};`;
+            return `${indent}${compactado}`;
+          }
+        );
+
+        formattedCode = formattedCode.replace(
+          /(await\s+)?axios\s*\.\s*(get|post|put|delete)\s*\(\s*([\s\S]*?)\s*\)/gm,
+          (match, awaitKeyword, method, insideParens) => {
+            const compressed = insideParens.replace(/\s+/g, " ").trim();
+            return `${awaitKeyword || ""}axios.${method}(${compressed})`;
+          }
+        );
+
+        await editor.edit((editBuilder) => {
+          editBuilder.replace(selection, formattedCode.trimEnd());
+        });
+
+        vscode.window.showInformationMessage(
+          "Selección JavaScript formateada correctamente."
+        );
+      } catch (error) {
+        vscode.window.showErrorMessage(
+          "Error al formatear la selección: " + error
+        );
+      }
+    }
   );
 
   const toggleValidacion = vscode.commands.registerCommand(
@@ -208,7 +307,24 @@ export function activate(context: vscode.ExtensionContext) {
     }
   );
 
-  context.subscriptions.push(toggleValidacion);
+  context.subscriptions.push(
+    formatJsWholeFile,
+    formatJsSelection,
+    toggleValidacion,
+
+    vscode.workspace.onDidChangeTextDocument((event) => {
+      verificarLineamientosJs(event.document);
+    }),
+
+    vscode.workspace.onDidSaveTextDocument((document) => {
+      verificarLineamientosJs(document);
+    }),
+
+    vscode.workspace.onDidOpenTextDocument((document) => {
+      verificarLineamientosJs(document);
+    })
+  );
+
   vscode.workspace.textDocuments.forEach(verificarLineamientosJs);
 }
 
