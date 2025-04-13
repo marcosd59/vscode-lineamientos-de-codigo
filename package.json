@@ -40,7 +40,7 @@
     "viewsWelcome": [
       {
         "view": "lineamientosJavaScriptView",
-        "contents": "Puedes usar estas herramientas:\n[Formatear JS - Archivo completo](command:lineamientos-de-codigo.formatJsCode)\n[Formatear JS - Selección](command:lineamientos-de-codigo.formatJsSelection)\n",
+        "contents": "Puedes usar estas herramientas:\n[Formatear JavaScript completo](command:lineamientos-de-codigo.formatJsCode)\n[Formatear JavaScript selección](command:lineamientos-de-codigo.formatJsSelection)\n",
         "when": "true"
       },
       {
@@ -61,6 +61,10 @@
       {
         "command": "lineamientos-de-codigo.toggleValidacion",
         "title": "Clever: Toggle de validación de lineamientos"
+      },
+      {
+        "command": "lineamientos-de-codigo.toggleTrailingSpaces",
+        "title": "Clever: Toggle de espacios en blanco"
       }
     ]
   },
