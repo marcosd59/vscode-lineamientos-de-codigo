@@ -22,16 +22,25 @@ const beautifyOptions = {
 };
 
 let validacionActiva: boolean;
+let trailingSpacesActivos: boolean;
 
 const diagnosticos = vscode.languages.createDiagnosticCollection(
   "lineamientosDeCodigo"
 );
+
+const TrailingSpacesDecoration = vscode.window.createTextEditorDecorationType({
+  backgroundColor: "rgba(255, 0, 0, 0.45)",
+  borderRadius: "3px",
+});
 
 export function activate(context: vscode.ExtensionContext) {
   console.log('¡La extensión "lineamientos-de-codigo" ya está activa!');
 
   validacionActiva =
     context.globalState.get<boolean>("validacionActiva") ?? true;
+
+  trailingSpacesActivos =
+    context.globalState.get<boolean>("trailingSpacesActivos") ?? true;
 
   const formatJsWholeFile = vscode.commands.registerCommand(
     "lineamientos-de-codigo.formatJsCode",
@@ -357,25 +366,79 @@ export function activate(context: vscode.ExtensionContext) {
     }
   );
 
+  const toggleTrailingSpaces = vscode.commands.registerCommand(
+    "lineamientos-de-codigo.toggleTrailingSpaces",
+    () => {
+      trailingSpacesActivos = !trailingSpacesActivos;
+      context.globalState.update(
+        "trailingSpacesActivos",
+        trailingSpacesActivos
+      );
+
+      if (!trailingSpacesActivos) {
+        vscode.window.visibleTextEditors.forEach((editor) => {
+          editor.setDecorations(TrailingSpacesDecoration, []);
+        });
+      } else {
+        vscode.window.visibleTextEditors.forEach((editor) => {
+          TrailingSpaces(editor);
+        });
+      }
+
+      const estado = trailingSpacesActivos ? "activado" : "desactivado";
+      vscode.window.showInformationMessage(`Resaltado de espacios ${estado}.`);
+    }
+  );
+
   context.subscriptions.push(
     formatJsWholeFile,
     formatJsSelection,
     toggleValidacion,
+    toggleTrailingSpaces,
 
     vscode.workspace.onDidChangeTextDocument((event) => {
       verificarLineamientosJs(event.document);
+      const editor = vscode.window.visibleTextEditors.find(
+        (e) => e.document === event.document
+      );
+      if (editor && trailingSpacesActivos) {
+        TrailingSpaces(editor);
+      }
     }),
 
     vscode.workspace.onDidSaveTextDocument((document) => {
       verificarLineamientosJs(document);
+      const editor = vscode.window.visibleTextEditors.find(
+        (e) => e.document === document
+      );
+      if (editor && trailingSpacesActivos) {
+        TrailingSpaces(editor);
+      }
     }),
 
     vscode.workspace.onDidOpenTextDocument((document) => {
       verificarLineamientosJs(document);
+      const editor = vscode.window.visibleTextEditors.find(
+        (e) => e.document === document
+      );
+      if (editor && trailingSpacesActivos) {
+        TrailingSpaces(editor);
+      }
+    }),
+
+    vscode.window.onDidChangeActiveTextEditor((editor) => {
+      if (editor && trailingSpacesActivos) {
+        TrailingSpaces(editor);
+      }
     })
   );
 
   vscode.workspace.textDocuments.forEach(verificarLineamientosJs);
+  vscode.window.visibleTextEditors.forEach((editor) => {
+    if (trailingSpacesActivos) {
+      TrailingSpaces(editor);
+    }
+  });
 }
 
 function verificarLineamientosJs(document: vscode.TextDocument) {
@@ -498,7 +561,7 @@ function verificarLineamientosJs(document: vscode.TextDocument) {
           diagnostics.push(
             new vscode.Diagnostic(
               new vscode.Range(start, end),
-              `❌ La variable '${variableName}' debe estar en snake_case (minúsculas o mayúsculas).`,
+              `❌ La variable '${variableName}' debe estar en snake_case.`,
               vscode.DiagnosticSeverity.Warning
             )
           );
@@ -533,4 +596,25 @@ function verificarLineamientosJs(document: vscode.TextDocument) {
   }
 
   diagnosticos.set(document.uri, diagnostics);
+}
+
+function TrailingSpaces(editor: vscode.TextEditor) {
+  const decoraciones: vscode.DecorationOptions[] = [];
+
+  for (let i = 0; i < editor.document.lineCount; i++) {
+    const linea = editor.document.lineAt(i);
+    const texto = linea.text;
+    const match = texto.match(/\s+$/);
+
+    if (match) {
+      const startPos = new vscode.Position(i, texto.length - match[0].length);
+      const endPos = new vscode.Position(i, texto.length);
+
+      decoraciones.push({
+        range: new vscode.Range(startPos, endPos),
+      });
+    }
+  }
+
+  editor.setDecorations(TrailingSpacesDecoration, decoraciones);
 }
