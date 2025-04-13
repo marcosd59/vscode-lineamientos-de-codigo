@@ -21,7 +21,7 @@ const beautifyOptions = {
   indent_empty_lines: false,
 };
 
-let validacionActiva = true;
+let validacionActiva: boolean;
 
 const diagnosticos = vscode.languages.createDiagnosticCollection(
   "lineamientosDeCodigo"
@@ -29,6 +29,9 @@ const diagnosticos = vscode.languages.createDiagnosticCollection(
 
 export function activate(context: vscode.ExtensionContext) {
   console.log('¡La extensión "lineamientos-de-codigo" ya está activa!');
+
+  validacionActiva =
+    context.globalState.get<boolean>("validacionActiva") ?? true;
 
   const formatJsWholeFile = vscode.commands.registerCommand(
     "lineamientos-de-codigo.formatJsCode",
@@ -190,6 +193,7 @@ export function activate(context: vscode.ExtensionContext) {
     "lineamientos-de-codigo.toggleValidacion",
     () => {
       validacionActiva = !validacionActiva;
+      context.globalState.update("validacionActiva", validacionActiva);
 
       if (!validacionActiva) {
         diagnosticos.clear();
