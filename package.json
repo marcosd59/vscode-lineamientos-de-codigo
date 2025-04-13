@@ -26,11 +26,13 @@
         {
           "id": "lineamientosJavaScriptView",
           "name": "Formateador de JavaScript",
+          "description": "Optimiza y reordena tu código JavaScript para mejorar su legibilidad y mantenimiento.",
           "icon": "assets/icon.svg"
         },
         {
-          "id": "lineamientosHTMLView",
-          "name": "Formateador de HTML",
+          "id": "lineamientosBotonesView",
+          "name": "Herramientas Globales",
+          "description": "Gestiona funciones esenciales del editor, como validaciones automáticas y limpieza de espacios en blanco.",
           "icon": "assets/icon.svg"
         }
       ]
@@ -38,13 +40,13 @@
     "viewsWelcome": [
       {
         "view": "lineamientosJavaScriptView",
-        "contents": "Puedes usar estas herramientas:\n[Formatear JS - Archivo Completo](command:lineamientos-de-codigo.formatJsCode)\n[Formatear JS - Selección](command:lineamientos-de-codigo.formatJsSelection)",
-        "when": "config.git.enabled && git.state == initialized && workbenchState == empty"
+        "contents": "Puedes usar estas herramientas:\n[Formatear JS - Archivo completo](command:lineamientos-de-codigo.formatJsCode)\n[Formatear JS - Selección](command:lineamientos-de-codigo.formatJsSelection)\n",
+        "when": "true"
       },
       {
-        "view": "lineamientosHTMLView",
-        "contents": "Puedes usar estas herramientas:\n[Formatear HTML - Archivo Completo](command:lineamientos-de-codigo.formatHtmlCode)\n[Formatear HTML - Selección](command:lineamientos-de-codigo.formatHtmlSelection)",
-        "when": "config.git.enabled && git.state == initialized && workbenchState == empty"
+        "view": "lineamientosBotonesView",
+        "contents": "Puedes activar o desactivar funciones globales:\n[Activar / Desactivar validación](command:lineamientos-de-codigo.toggleValidacion)\n[Activar / Desactivar espacios](command:lineamientos-de-codigo.toggleTrailingSpaces)\n",
+        "when": "true"
       }
     ],
     "commands": [
@@ -57,16 +59,8 @@
         "title": "Clever: JS - Formatear Selección"
       },
       {
-        "command": "lineamientos-de-codigo.formatHtmlCode",
-        "title": "Clever: HTML - Formatear archivo completo"
-      },
-      {
-        "command": "lineamientos-de-codigo.formatHtmlSelection",
-        "title": "Clever: HTML - Formatear Selección"
-      },
-      {
-        "command": "lineamientos-de-codigo.verificarLineamientos",
-        "title": "Clever: JS - Verificar Lineamientos"
+        "command": "lineamientos-de-codigo.toggleValidacion",
+        "title": "Clever: Activar/Desactivar validación de lineamientos"
       }
     ]
   },
