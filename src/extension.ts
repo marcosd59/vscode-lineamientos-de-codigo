@@ -76,6 +76,18 @@ export function activate(context: vscode.ExtensionContext) {
           "$1,\n\n$2"
         );
 
+        // Detecta notación abreviada con o sin async
+        formattedCode = formattedCode.replace(
+          /^(\s*[\w$]+\s*\([\s\S]*?\}\s*),\s*\n(\s*[\w$]+:)/gm,
+          "$1,\n\n$2"
+        );
+
+        // Detecta también forma `nombre: async function()`
+        formattedCode = formattedCode.replace(
+          /^(\s*[\w$]+:\s*async\s+function\s*\([\s\S]*?\}\s*),\s*\n(\s*[\w$]+:)/gm,
+          "$1,\n\n$2"
+        );
+
         // Separar la creación de Vue con línea extra
         formattedCode = formattedCode.replace(
           /([^\n])\n(\s*(var|let|const)\s+\w+\s*=\s*new\s+Vue\s*\()/g,
@@ -90,8 +102,9 @@ export function activate(context: vscode.ExtensionContext) {
 
         // Compactar objetos o arrays vacíos en una sola línea
         formattedCode = formattedCode.replace(
-          /:\s*\n\s*(\{\}|\[\]|\[\{\},?\])\s*,/g,
-          (match, estructura) => `: ${estructura},`
+          /(\w+):\s*\n\s*(\{\}|\[\]|\[\{\},?\])(\s*,?)/g,
+          (match, key, estructura, coma) =>
+            `${key}: ${estructura}${coma || ","}`
         );
 
         // Compactar condiciones if multilinea if(a && b && c)
@@ -233,6 +246,18 @@ export function activate(context: vscode.ExtensionContext) {
           "$1\n\n$2"
         );
 
+        // Detecta notación abreviada con o sin async
+        formattedCode = formattedCode.replace(
+          /^(\s*[\w$]+\s*\([\s\S]*?\}\s*),\s*\n(\s*[\w$]+:)/gm,
+          "$1,\n\n$2"
+        );
+
+        // Detecta también forma `nombre: async function()`
+        formattedCode = formattedCode.replace(
+          /^(\s*[\w$]+:\s*async\s+function\s*\([\s\S]*?\}\s*),\s*\n(\s*[\w$]+:)/gm,
+          "$1,\n\n$2"
+        );
+
         // Separar la creación Vue con línea extra
         formattedCode = formattedCode.replace(
           /([^\n])(\s*Vue\.(directive|filter|mixin|use|component)\s*\()/g,
@@ -241,8 +266,9 @@ export function activate(context: vscode.ExtensionContext) {
 
         // Compactar objetos o arrays vacíos en una sola línea
         formattedCode = formattedCode.replace(
-          /:\s*\n\s*(\{\}|\[\]|\[\{\},?\])\s*,/g,
-          (match, estructura) => `: ${estructura},`
+          /(\w+):\s*\n\s*(\{\}|\[\]|\[\{\},?\])(\s*,?)/g,
+          (match, key, estructura, coma) =>
+            `${key}: ${estructura}${coma || ","}`
         );
 
         formattedCode = formattedCode.replace(
