@@ -52,19 +52,23 @@
     "commands": [
       {
         "command": "lineamientos-de-codigo.formatJsCode",
-        "title": "Clever: Formatear archivo JavaScript"
+        "title": "Clever: Formatear archivo JavaScript",
+        "description": "Optimiza y reordena tu código JavaScript para mejorar su legibilidad y mantenimiento."
       },
       {
         "command": "lineamientos-de-codigo.formatJsSelection",
-        "title": "Clever: Formatear selección JavaScript"
+        "title": "Clever: Formatear selección JavaScript",
+        "description": "Optimiza y reordena tu código JavaScript para mejorar su legibilidad y mantenimiento."
       },
       {
         "command": "lineamientos-de-codigo.toggleValidacion",
-        "title": "Clever: Toggle de validación de lineamientos"
+        "title": "Clever: Toggle de validación de lineamietos",
+        "description": "Activa o desactiva la validación automática de lineamientos de código."
       },
       {
         "command": "lineamientos-de-codigo.toggleTrailingSpaces",
-        "title": "Clever: Toggle de espacios en blanco"
+        "title": "Clever: Toggle de espacios en blanco",
+        "description": "Activa o desactiva la visualización de espacios en blanco al final de las líneas."
       }
     ]
   },
