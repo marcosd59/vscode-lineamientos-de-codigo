@@ -21,6 +21,8 @@ const beautifyOptions = {
   indent_empty_lines: false,
 };
 
+let validacionActiva = true;
+
 const diagnosticos = vscode.languages.createDiagnosticCollection(
   "lineamientosDeCodigo"
 );
@@ -31,6 +33,7 @@ export function activate(context: vscode.ExtensionContext) {
   const formatJsWholeFile = vscode.commands.registerCommand(
     "lineamientos-de-codigo.formatJsCode",
     async () => {
+      // Verificar si hay un editor activo
       const editor = vscode.window.activeTextEditor;
       if (!editor) {
         vscode.window.showErrorMessage("No hay un editor activo.");
@@ -38,18 +41,103 @@ export function activate(context: vscode.ExtensionContext) {
       }
 
       const document = editor.document;
+
+      // Verificar si el documento es un archivo JavaScript
+      if (document.languageId !== "javascript") {
+        vscode.window.showErrorMessage(
+          "Este formateador solo funciona con archivos JavaScript (.js)."
+        );
+        return;
+      }
+
       const originalCode = document.getText();
 
       try {
         let formattedCode = beautify(originalCode, beautifyOptions);
 
-        const axiosPattern = /axios\.(get|post|put|delete)\([\s\S]*?\);/gm;
-        formattedCode = formattedCode.replace(axiosPattern, (match) => {
-          return match
-            .replace(/\s+/g, " ")
-            .replace(/\(\s+/g, "(")
-            .replace(/\s+\)/g, ")");
-        });
+        // Separar métodos y funciones con una línea en blanco
+        formattedCode = formattedCode.replace(
+          /^(\s*)},\s*\n(\s*)([\w$]+:\s*(async\s+)?function(\s+\w+)?\s*\(|(async\s+)?[\w$]+\s*\()/gm,
+          "$1},\n\n$2$3"
+        );
+
+        // Separar métodos de objeto (versión simplificada)
+        formattedCode = formattedCode.replace(
+          /^(\s*[\w$]+:\s*function\s*\([\s\S]*?\}\s*),\s*\n(\s*[\w$]+:)/gm,
+          "$1,\n\n$2"
+        );
+
+        // Separar métodos async también
+        formattedCode = formattedCode.replace(
+          /^(\s*[\w$]+:\s*(?:async\s+)?function(?:\s+\w+)?\([\s\S]*?\}\s*),\s*\n(\s*[\w$]+:)/gm,
+          "$1,\n\n$2"
+        );
+
+        // Separar la creación de Vue con línea extra
+        formattedCode = formattedCode.replace(
+          /([^\n])\n(\s*(var|let|const)\s+\w+\s*=\s*new\s+Vue\s*\()/g,
+          "$1\n\n$2"
+        );
+
+        // Compactar condiciones if multilinea if(a && b && c)
+        formattedCode = formattedCode.replace(
+          /if\s*\(\s*\n([\s\S]*?)\n\s*\)/gm,
+          (match, condiciones) => {
+            const oneLiner = condiciones
+              .split("\n")
+              .map((line: string) => line.trim())
+              .join(" ")
+              .replace(/\s+/g, " ");
+            return `if(${oneLiner})`;
+          }
+        );
+
+        // Compactar argumentos de funciones multilinea
+        formattedCode = formattedCode.replace(
+          /(:\s*(?:async\s+)?function\s*)\(\s*\n([\s\S]*?)\n\s*\)/gm,
+          (match, funcPrefix, argsBloque) => {
+            const argumentos = argsBloque
+              .split("\n")
+              .map((line: string) => line.trim().replace(/,$/, ""))
+              .filter((line: string) => line.length > 0)
+              .join(", ");
+            return `${funcPrefix}(${argumentos})`;
+          }
+        );
+
+        // Compactar asignaciones multilinea const miValor = obtenerValorLargo().config().final();
+        formattedCode = formattedCode.replace(
+          /\b(let|const|var)\s+([a-zA-Z_$][a-zA-Z0-9_$]*)\s*=\s*\n\s*([\s\S]*?);/gm,
+          (match, tipo, nombre, expresion) => {
+            const unaLinea = expresion
+              .split("\n")
+              .map((line: string) => line.trim())
+              .join(" ")
+              .replace(/\s+/g, " ");
+            return `${tipo} ${nombre} = ${unaLinea};`;
+          }
+        );
+
+        // Compactar ternarios multilinea resultado = condicion ? valorSiVerdadero : valorSiFalso;
+        formattedCode = formattedCode.replace(
+          /^(\s*)([^\n;]+=\s*[^\n?:]+)\?\s*\n\s*([^\n]+)\s*:\s*\n\s*([^\n;]+);/gm,
+          (match, indent, condicion, valorTrue, valorFalse) => {
+            const compactado = `${condicion.trim()} ? ${valorTrue.trim()} : ${valorFalse.trim()};`;
+            return `${indent}${compactado}`;
+          }
+        );
+
+        // Compactar peticiones axios mal formateadas
+        const axiosPattern =
+          /(await\s+)?axios\s*\.\s*(get|post|put|delete)\s*\(\s*([\s\S]*?)\s*\)/gm;
+
+        formattedCode = formattedCode.replace(
+          axiosPattern,
+          (match, awaitKeyword, method, insideParens) => {
+            const compressed = insideParens.replace(/\s+/g, " ").trim();
+            return `${awaitKeyword || ""}axios.${method}(${compressed})`;
+          }
+        );
 
         formattedCode = formattedCode.trimEnd() + "\n";
 
@@ -62,35 +150,71 @@ export function activate(context: vscode.ExtensionContext) {
           editBuilder.replace(fullRange, formattedCode);
         });
 
+        // Actualizar la configuración del editor a 4 tabulaciones
+        await vscode.workspace
+          .getConfiguration("editor", document.uri)
+          .update("tabSize", 4, vscode.ConfigurationTarget.Workspace);
+
+        await vscode.workspace
+          .getConfiguration("editor", document.uri)
+          .update("insertSpaces", true, vscode.ConfigurationTarget.Workspace);
+
         vscode.window.showInformationMessage(
           "JavaScript formateado correctamente."
         );
       } catch (error) {
         vscode.window.showErrorMessage(
-          "Error al formatear el código: " + error
+          "Error al formatear el código: " + error + "."
         );
       }
     }
   );
 
-  vscode.workspace.onDidOpenTextDocument(verificarLineamientosJs);
-  vscode.workspace.onDidChangeTextDocument((e) =>
-    verificarLineamientosJs(e.document)
+  context.subscriptions.push(
+    formatJsWholeFile,
+
+    vscode.workspace.onDidChangeTextDocument((event) => {
+      verificarLineamientosJs(event.document);
+    }),
+
+    vscode.workspace.onDidSaveTextDocument((document) => {
+      verificarLineamientosJs(document);
+    }),
+
+    vscode.workspace.onDidOpenTextDocument((document) => {
+      verificarLineamientosJs(document);
+    })
   );
 
-  vscode.workspace.onDidOpenTextDocument(verificarLineamientosHTML);
-  vscode.workspace.onDidChangeTextDocument((e) =>
-    verificarLineamientosHTML(e.document)
+  const toggleValidacion = vscode.commands.registerCommand(
+    "lineamientos-de-codigo.toggleValidacion",
+    () => {
+      validacionActiva = !validacionActiva;
+
+      if (!validacionActiva) {
+        diagnosticos.clear();
+      } else {
+        vscode.workspace.textDocuments.forEach(verificarLineamientosJs);
+      }
+
+      const estado = validacionActiva ? "activada" : "desactivada";
+      vscode.window.showInformationMessage(
+        `Validación de lineamientos ${estado}.`
+      );
+    }
   );
 
-  vscode.workspace.textDocuments.forEach(verificarLineamientosHTML);
+  context.subscriptions.push(toggleValidacion);
   vscode.workspace.textDocuments.forEach(verificarLineamientosJs);
-
-  context.subscriptions.push(formatJsWholeFile);
 }
 
 function verificarLineamientosJs(document: vscode.TextDocument) {
-  if ( document.languageId !== "javascript" &&
+  if (!validacionActiva) {
+    return;
+  }
+
+  if (
+    document.languageId !== "javascript" &&
     document.languageId !== "typescript"
   ) {
     return;
@@ -144,21 +268,23 @@ function verificarLineamientosJs(document: vscode.TextDocument) {
       diagnostics.push(
         new vscode.Diagnostic(
           new vscode.Range(start, end),
-          "❌ Recuerda eliminar los 'console.log' antes de subir el código a producción.",
+          "❌ Recuerda eliminar los 'console.log' antes de subir el código.",
           vscode.DiagnosticSeverity.Warning
         )
       );
     }
 
     // Regla 3: alert
-    const alertIndex = text.indexOf("alert(");
-    if (alertIndex !== -1) {
+    const alertRegex = /\balert\s*\(/g;
+    let match_3;
+    while ((match_3 = alertRegex.exec(text)) !== null) {
+      const alertIndex = match_3.index;
       const start = new vscode.Position(i, alertIndex);
       const end = new vscode.Position(i, alertIndex + "alert".length);
       diagnostics.push(
         new vscode.Diagnostic(
           new vscode.Range(start, end),
-          "❌ No utilizar 'alert()' para mostrar mensajes al usuario. Usa un toast en su lugar.",
+          "❌ No uses alert() para mensajes. Usa un 'toast' en su lugar.",
           vscode.DiagnosticSeverity.Warning
         )
       );
@@ -178,25 +304,57 @@ function verificarLineamientosJs(document: vscode.TextDocument) {
       );
     }
 
-    // Regla 5: Variables en snake_case
+    // Regla 5: Variables en snake_case, omitir camelCase que comiencen con "app"
     const variableRegex = /\b(let|const|var)\s+([a-zA-Z_$][a-zA-Z0-9_$]*)/g;
     let match;
     while ((match = variableRegex.exec(text)) !== null) {
       const variableName = match[2];
-      const isSnakeCase = /^[a-z]+(_[a-z0-9]+)*$/.test(variableName);
+
+      const isException = /^app[A-Z]/i.test(variableName);
+
+      if (!isException) {
+        const isSnakeCase = /^([a-z]+|[A-Z]+)(_([a-z0-9]+|[A-Z0-9]+))*$/.test(
+          variableName
+        );
+        if (!isSnakeCase) {
+          const start = new vscode.Position(
+            i,
+            match.index! + match[1].length + 1
+          );
+          const end = new vscode.Position(
+            i,
+            start.character + variableName.length
+          );
+          diagnostics.push(
+            new vscode.Diagnostic(
+              new vscode.Range(start, end),
+              `❌ La variable '${variableName}' debe estar en snake_case (minúsculas o mayúsculas).`,
+              vscode.DiagnosticSeverity.Warning
+            )
+          );
+        }
+      }
+    }
+
+    // Regla 6: Nombres de funciones en snake_case
+    const objectMethodRegex =
+      /\b([a-zA-Z_$][a-zA-Z0-9_$]*)\s*:\s*(?:async\s*)?function\s*\(/g;
+    let functionMatch;
+    while ((functionMatch = objectMethodRegex.exec(text)) !== null) {
+      const functionName = functionMatch[1];
+
+      const isSnakeCase = /^[a-z]+(_[a-z0-9]+)*$/.test(functionName);
+
       if (!isSnakeCase) {
-        const start = new vscode.Position(
-          i,
-          match.index! + match[1].length + 1
-        );
+        const start = new vscode.Position(i, functionMatch.index!);
         const end = new vscode.Position(
           i,
-          start.character + variableName.length
+          start.character + functionName.length
         );
         diagnostics.push(
           new vscode.Diagnostic(
             new vscode.Range(start, end),
-            `❌ El nombre de la variable '${variableName}' debe estar en snake_case.`,
+            `❌ El nombre de la función '${functionName}' debe estar en snake_case.`,
             vscode.DiagnosticSeverity.Warning
           )
         );
@@ -205,52 +363,4 @@ function verificarLineamientosJs(document: vscode.TextDocument) {
   }
 
   diagnosticos.set(document.uri, diagnostics);
-}
-
-function verificarLineamientosHTML(document: vscode.TextDocument) {
-  if (document.languageId !== "html") {
-    return;
-  }
-
-  const diagnostics: vscode.Diagnostic[] = [];
-
-  for (let i = 0; i < document.lineCount - 1; i++) {
-    const line = document.lineAt(i);
-    const nextLine = document.lineAt(i + 1);
-
-    const reglasEtiquetas = [
-      { apertura: /<span\b[^>]*>/, cierre: /<\/span>/, nombre: "span" },
-      { apertura: /<button\b[^>]*>/, cierre: /<\/button>/, nombre: "button" },
-    ];
-
-    for (const regla of reglasEtiquetas) {
-      const aperturaMatch = line.text.match(regla.apertura);
-      const cierreMatch = nextLine.text.match(regla.cierre);
-
-      if (aperturaMatch && cierreMatch) {
-        const start = new vscode.Position(
-          i,
-          line.text.indexOf("<" + regla.nombre)
-        );
-        const end = new vscode.Position(
-          i + 1,
-          nextLine.text.indexOf(`</${regla.nombre}>`) + regla.nombre.length + 3
-        );
-        diagnostics.push(
-          new vscode.Diagnostic(
-            new vscode.Range(start, end),
-            `❌ La etiqueta <${regla.nombre}> debe estar en una sola línea.`,
-            vscode.DiagnosticSeverity.Warning
-          )
-        );
-      }
-    }
-  }
-
-  diagnosticos.set(document.uri, diagnostics);
-}
-
-export function deactivate() {
-  diagnosticos.clear();
-  diagnosticos.dispose();
 }
