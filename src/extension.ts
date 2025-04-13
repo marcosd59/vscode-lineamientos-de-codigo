@@ -82,6 +82,18 @@ export function activate(context: vscode.ExtensionContext) {
           "$1\n\n$2"
         );
 
+        // Separar la creación Vue con línea extra
+        formattedCode = formattedCode.replace(
+          /([^\n])(\s*Vue\.(directive|filter|mixin|use|component)\s*\()/g,
+          "$1\n$2"
+        );
+
+        // Compactar objetos o arrays vacíos en una sola línea
+        formattedCode = formattedCode.replace(
+          /:\s*\n\s*(\{\}|\[\]|\[\{\},?\])\s*,/g,
+          (match, estructura) => `: ${estructura},`
+        );
+
         // Compactar condiciones if multilinea if(a && b && c)
         formattedCode = formattedCode.replace(
           /if\s*\(\s*\n([\s\S]*?)\n\s*\)/gm,
@@ -219,6 +231,18 @@ export function activate(context: vscode.ExtensionContext) {
         formattedCode = formattedCode.replace(
           /([^\n])\n(\s*(var|let|const)\s+\w+\s*=\s*new\s+Vue\s*\()/g,
           "$1\n\n$2"
+        );
+
+        // Separar la creación Vue con línea extra
+        formattedCode = formattedCode.replace(
+          /([^\n])(\s*Vue\.(directive|filter|mixin|use|component)\s*\()/g,
+          "$1\n$2"
+        );
+
+        // Compactar objetos o arrays vacíos en una sola línea
+        formattedCode = formattedCode.replace(
+          /:\s*\n\s*(\{\}|\[\]|\[\{\},?\])\s*,/g,
+          (match, estructura) => `: ${estructura},`
         );
 
         formattedCode = formattedCode.replace(
