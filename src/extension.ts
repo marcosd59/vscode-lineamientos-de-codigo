@@ -666,7 +666,7 @@ class HelpAndFeedbackProvider implements vscode.TreeDataProvider<HelpItem> {
         "issues"
       ),
       new HelpItem(
-        "Made with ❤️ by the Red Team",
+        "Made with ❤️ by Marcos Pool",
         "https://www.linkedin.com/in/marcosd59/",
         "account"
       ),
