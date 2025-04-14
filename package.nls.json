@@ -1,0 +1,3 @@
+{
+  "lineamientosContainer.viewsWelcome.lineamientosJavaScriptView.contents.whenEmpty": "Puedes usar estas herramientas:\nFormatear tu código JavaScript para que sea más legible y mantenible:\n[Formatear archivo completo](command:lineamientos-de-codigo.formatJsCode)\n[Formatear selección](command:lineamientos-de-codigo.formatJsSelection)\n\nTambién puedes controlar funciones globales del editor:\n[Activar / Desactivar validación](command:lineamientos-de-codigo.toggleValidacion)\n[Activar / Desactivar espacios en blanco](command:lineamientos-de-codigo.toggleTrailingSpaces)\n\nPara más información sobre cómo usar esta extensión [lee la documentación](https://github.com/marcosd59/lineamientos-de-codigo/blob/master/README.md)."
+}
