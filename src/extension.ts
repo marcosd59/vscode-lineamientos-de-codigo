@@ -36,11 +36,17 @@ const TrailingSpacesDecoration = vscode.window.createTextEditorDecorationType({
 export function activate(context: vscode.ExtensionContext) {
   console.log('¡La extensión "lineamientos-de-codigo" ya está activa!');
 
+  // Validaciones de código
   validacionActiva =
     context.globalState.get<boolean>("validacionActiva") ?? true;
 
+  // Trailing spaces
   trailingSpacesActivos =
     context.globalState.get<boolean>("trailingSpacesActivos") ?? true;
+
+  // Configuración del decorador para espacios finales
+  const helpProvider = new HelpAndFeedbackProvider();
+  vscode.window.registerTreeDataProvider("lineamientosHelpView", helpProvider);
 
   const formatJsWholeFile = vscode.commands.registerCommand(
     "lineamientos-de-codigo.formatJsCode",
@@ -390,6 +396,8 @@ export function activate(context: vscode.ExtensionContext) {
     }
   );
 
+  let debounceTimer: NodeJS.Timeout | undefined;
+
   context.subscriptions.push(
     formatJsWholeFile,
     formatJsSelection,
@@ -397,13 +405,19 @@ export function activate(context: vscode.ExtensionContext) {
     toggleTrailingSpaces,
 
     vscode.workspace.onDidChangeTextDocument((event) => {
-      verificarLineamientosJs(event.document);
-      const editor = vscode.window.visibleTextEditors.find(
-        (e) => e.document === event.document
-      );
-      if (editor && trailingSpacesActivos) {
-        TrailingSpaces(editor);
+      if (debounceTimer) {
+        clearTimeout(debounceTimer);
       }
+      debounceTimer = setTimeout(() => {
+        verificarLineamientosJs(event.document);
+
+        const editor = vscode.window.visibleTextEditors.find(
+          (e) => e.document === event.document
+        );
+        if (editor && trailingSpacesActivos) {
+          TrailingSpaces(editor);
+        }
+      }, 500);
     }),
 
     vscode.workspace.onDidSaveTextDocument((document) => {
@@ -517,7 +531,7 @@ function verificarLineamientosJs(document: vscode.TextDocument) {
       diagnostics.push(
         new vscode.Diagnostic(
           new vscode.Range(start, end),
-          "❌ No uses alert() para mensajes. Usa un 'toast' en su lugar.",
+          "❌ No uses alert() para mensajes. Usa un 'toastr' en su lugar.",
           vscode.DiagnosticSeverity.Warning
         )
       );
@@ -617,4 +631,57 @@ function TrailingSpaces(editor: vscode.TextEditor) {
   }
 
   editor.setDecorations(TrailingSpacesDecoration, decoraciones);
+}
+
+class HelpAndFeedbackProvider implements vscode.TreeDataProvider<HelpItem> {
+  private _onDidChangeTreeData: vscode.EventEmitter<HelpItem | undefined> =
+    new vscode.EventEmitter<HelpItem | undefined>();
+  readonly onDidChangeTreeData: vscode.Event<HelpItem | undefined> =
+    this._onDidChangeTreeData.event;
+
+  getTreeItem(element: HelpItem): vscode.TreeItem {
+    return element;
+  }
+
+  getChildren(): Thenable<HelpItem[]> {
+    return Promise.resolve([
+      new HelpItem(
+        "Get Started",
+        "https://github.com/marcosd59/lineamientos-de-codigo/blob/master/README.md",
+        "star"
+      ),
+      new HelpItem(
+        "Report a Bug",
+        "https://github.com/marcosd59/lineamientos-de-codigo/issues/new/choose",
+        "bug"
+      ),
+      new HelpItem(
+        "Send Feedback",
+        "mailto:damian.marcospool@gmail.com",
+        "comment"
+      ),
+      new HelpItem(
+        "View Open Issues",
+        "https://github.com/marcosd59/lineamientos-de-codigo/issues",
+        "issues"
+      ),
+      new HelpItem(
+        "Made with ❤️ by the Red Team",
+        "https://www.linkedin.com/in/marcosd59/",
+        "account"
+      ),
+    ]);
+  }
+}
+
+class HelpItem extends vscode.TreeItem {
+  constructor(label: string, url: string, codicon: string) {
+    super(label);
+    this.command = {
+      command: "vscode.open",
+      title: label,
+      arguments: [vscode.Uri.parse(url)],
+    };
+    this.iconPath = new vscode.ThemeIcon(codicon);
+  }
 }
