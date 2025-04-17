@@ -59,6 +59,7 @@ Ideal para equipos que desean mantener un código limpio, consistente y fácil d
   <strong>Insertar plantilla GET de API</strong><br />
   <img src="https://raw.githubusercontent.com/marcosd59/vscode-lineamientos-de-codigo/master/assets/images/insert-get-api-template.gif" width="80%" />
 </p>
+
 ---
 
 ## ¿Qué valida y corrige?
