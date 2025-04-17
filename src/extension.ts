@@ -1,5 +1,6 @@
 import * as vscode from "vscode";
 import { js as beautify } from "js-beautify";
+import * as crudApiCommands from "./commands/crudApiCommands";
 
 const beautifyOptions = {
   indent_size: 4,
@@ -395,6 +396,11 @@ export function activate(context: vscode.ExtensionContext) {
       vscode.window.showInformationMessage(`Resaltado de espacios ${estado}.`);
     }
   );
+
+  crudApiCommands.registerGetApiCommand(context);
+  crudApiCommands.registerPostApiCommand(context);
+  crudApiCommands.registerPutApiCommand(context);
+  crudApiCommands.registerDeleteApiCommand(context);
 
   let debounceTimer: NodeJS.Timeout | undefined;
 

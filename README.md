@@ -54,6 +54,18 @@ Detecta y marca automáticamente:
 - Estructuras condicionales `if/else` mal implementadas
 - Espacios en blanco innecesarios al final de línea
 
+### Snippets para plantillas de APIs
+
+Ahorra tiempo al generar endpoints estándar en PHP con los nuevos _snippets_ de código incluidos en la extensión:
+
+- `GET API Template` → Prefijo: `getApi`
+- `POST API Template` → Prefijo: `postApi`
+- `PUT API Template` → Prefijo: `putApi`
+- `DELETE API Template` → Prefijo: `deleteApi`
+
+Se pueden insertar manualmente escribiendo el prefijo en archivos `.php`, o desde la vista lateral integrada con accesos rápidos.
+Estas plantillas siguen los lineamientos de formato recomendados y están pensadas para facilitar el desarrollo de APIs CRUD de forma rápida y estandarizada.
+
 ### Decoración visual
 
 Resalta con color de fondo los espacios al final de cada línea para facilitar su eliminación antes de confirmar cambios en control de versiones.
@@ -62,12 +74,16 @@ Resalta con color de fondo los espacios al final de cada línea para facilitar s
 
 ## Comandos disponibles
 
-| Comando                                       | Descripción                                                  |
-| --------------------------------------------- | ------------------------------------------------------------ |
-| `lineamientos-de-codigo.formatJsCode`         | Formatea todo el archivo actual.                             |
-| `lineamientos-de-codigo.formatJsSelection`    | Formatea solo el bloque de código seleccionado.              |
-| `lineamientos-de-codigo.toggleValidacion`     | Activa o desactiva la validación automática.                 |
-| `lineamientos-de-codigo.toggleTrailingSpaces` | Muestra u oculta el resaltado de espacios al final de línea. |
+| Comando                                          | Descripción                                                  |
+| ------------------------------------------------ | ------------------------------------------------------------ |
+| `lineamientos-de-codigo.formatJsCode`            | Formatea todo el archivo actual.                             |
+| `lineamientos-de-codigo.formatJsSelection`       | Formatea solo el bloque de código seleccionado.              |
+| `lineamientos-de-codigo.toggleValidacion`        | Activa o desactiva la validación automática.                 |
+| `lineamientos-de-codigo.toggleTrailingSpaces`    | Muestra u oculta el resaltado de espacios al final de línea. |
+| `lineamientos-de-codigo.insertGetApiTemplate`    | Inserta una plantilla básica para un endpoint GET en PHP.    |
+| `lineamientos-de-codigo.insertPostApiTemplate`   | Inserta una plantilla básica para un endpoint POST en PHP.   |
+| `lineamientos-de-codigo.insertPutApiTemplate`    | Inserta una plantilla básica para un endpoint PUT en PHP.    |
+| `lineamientos-de-codigo.insertDeleteApiTemplate` | Inserta una plantilla básica para un endpoint DELETE en PHP. |
 
 ---
 

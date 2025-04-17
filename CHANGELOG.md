@@ -4,6 +4,22 @@ All notable changes to the **lineamientos-de-codigo** extension will be document
 
 This project follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) and uses [Semantic Versioning](https://semver.org/).
 
+## [1.1.0] – 2025-04-16
+
+### Added
+
+- Plantillas prediseñadas para insertar endpoints básicos en PHP:
+  - `GET`, `POST`, `PUT`, `DELETE`
+  - Disponibles desde la vista lateral del panel de ayuda
+  - Incluyen accesos rápidos con comandos:
+    - `lineamientos-de-codigo.insertGetApiTemplate`
+    - `lineamientos-de-codigo.insertPostApiTemplate`
+    - `lineamientos-de-codigo.insertPutApiTemplate`
+    - `lineamientos-de-codigo.insertDeleteApiTemplate`
+- Las plantillas se encuentran organizadas en un archivo de snippets reutilizable
+- Se activan mediante prefijos como "getApi", "postApi", "putApi", "deleteApi".
+- Mejora la velocidad de desarrollo de APIs siguiendo los lineamientos estándar de Clever
+
 ## [1.0.0] – 2025-04-13
 
 ### Added

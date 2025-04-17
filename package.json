@@ -2,7 +2,7 @@
   "name": "lineamientos-de-codigo",
   "displayName": "Lineamientos de Código",
   "description": "Extensión para formatear código automáticamente según lineamientos de estilo, asegurando una sintaxis limpia y consistente en JavaScript.",
-  "version": "0.0.1",
+  "version": "1.1.0",
   "publisher": "marcosd59",
   "license": "MIT",
   "icon": "assets/icon.png",
@@ -42,9 +42,16 @@
           "icon": "assets/icon.svg"
         },
         {
+          "id": "lineamientosCrudApiView",
+          "name": "Basic Endpoints Templates",
+          "visibility": "visible",
+          "description": "Accesos rápidos para insertar plantillas de endpoints GET, POST, PUT y DELETE.",
+          "icon": "assets/icon.svg"
+        },
+        {
           "id": "lineamientosHelpView",
           "name": "Help and Feedback",
-          "visibility": "visible",
+          "visibility": "collapsed",
           "description": "Proporciona información sobre la extensión y permite enviar comentarios o sugerencias.",
           "icon": "assets/icon.svg"
         }
@@ -55,28 +62,63 @@
         "view": "lineamientosJavaScriptView",
         "contents": "%lineamientosContainer.viewsWelcome.lineamientosJavaScriptView.contents.whenEmpty%",
         "when": "true"
+      },
+      {
+        "view": "lineamientosCrudApiView",
+        "contents": "%lineamientosContainer.viewsWelcome.lineamientosCrudApiView.contents.whenEmpty%",
+        "when": "true"
       }
     ],
     "commands": [
       {
         "command": "lineamientos-de-codigo.formatJsCode",
+        "category": "JavaScript",
         "title": "Clever: Formatear archivo JavaScript",
         "description": "Optimiza y reordena tu código JavaScript para mejorar su legibilidad y mantenimiento."
       },
       {
         "command": "lineamientos-de-codigo.formatJsSelection",
+        "category": "JavaScript",
         "title": "Clever: Formatear selección JavaScript",
         "description": "Optimiza y reordena tu código JavaScript para mejorar su legibilidad y mantenimiento."
       },
       {
         "command": "lineamientos-de-codigo.toggleValidacion",
+        "category": "Variables",
         "title": "Clever: Toggle de validación de lineamietos",
         "description": "Activa o desactiva la validación automática de lineamientos de código."
       },
       {
         "command": "lineamientos-de-codigo.toggleTrailingSpaces",
+        "category": "Variables",
         "title": "Clever: Toggle de espacios en blanco",
         "description": "Activa o desactiva la visualización de espacios en blanco al final de las líneas."
+      },
+      {
+        "command": "lineamientos-de-codigo.insertGetApiTemplate",
+        "category": "Endpoints",
+        "title": "Clever: Insert GET API Template"
+      },
+      {
+        "command": "lineamientos-de-codigo.insertPostApiTemplate",
+        "category": "Endpoints",
+        "title": "Clever: Insert POST API Template"
+      },
+      {
+        "command": "lineamientos-de-codigo.insertPutApiTemplate",
+        "category": "Endpoints",
+        "title": "Clever: Insert PUT API Template"
+      },
+      {
+        "command": "lineamientos-de-codigo.insertDeleteApiTemplate",
+        "category": "Endpoints",
+        "title": "Clever: Insert DELETE API Template"
+      }
+    ],
+    "snippets": [
+      {
+        "language": "php",
+        "path": "./snippets/basic-endpoints-templates.code-snippets"
       }
     ]
   },
