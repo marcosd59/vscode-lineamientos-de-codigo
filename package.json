@@ -1,17 +1,17 @@
 {
   "name": "lineamientos-de-codigo",
   "displayName": "Lineamientos de Código",
-  "description": "Extensión para formatear código automáticamente según lineamientos de estilo, asegurando una sintaxis limpia y consistente en JavaScript.",
-  "version": "1.1.0",
+  "description": "Extensión para Visual Studio Code que formatea y valida automáticamente tu código JavaScript según lineamientos de estilo predefinidos. También incluye plantillas para crear endpoints básicos en PHP.",
+  "version": "1.1.1",
   "publisher": "marcosd59",
   "license": "MIT",
   "icon": "assets/icon.png",
   "repository": {
     "type": "git",
-    "url": "https://github.com/marcosd59/lineamientos-de-codigo"
+    "url": "https://github.com/marcosd59/vscode-lineamientos-de-codigo"
   },
   "bugs": {
-    "url": "https://github.com/marcosd59/lineamientos-de-codigo/issues"
+    "url": "https://github.com/marcosd59/vscode-lineamientos-de-codigo/issues"
   },
   "engines": {
     "vscode": "^1.98.0"

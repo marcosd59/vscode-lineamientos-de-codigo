@@ -39,7 +39,7 @@ export function registerGetApiCommand(context: vscode.ExtensionContext) {
           '           \\$codigo_error = "BD-000000000 | ".\\$error_info[1];',
           "           \\$mensaje_error = \\$error_info[2];",
           '           \\$tipo_error = "CONSULTA SQL";',
-          "             return false;",
+          "           return false;",
           "        }",
           "",
           "        return true;",
@@ -104,6 +104,10 @@ export function registerGetApiCommand(context: vscode.ExtensionContext) {
           '}, \\$entidad."_${1:ruta_endpoint}_obtener_${2:objeto}");',
           "",
         ].join("\n")
+      );
+
+      vscode.window.showInformationMessage(
+        "Plantilla de API GET insertada correctamente."
       );
 
       editor.insertSnippet(snippet);
@@ -235,6 +239,10 @@ export function registerPostApiCommand(context: vscode.ExtensionContext) {
           '}, \\$entidad."_${1:ruta_endpoint}_insert_${2:objeto}");',
           "",
         ].join("\n")
+      );
+
+      vscode.window.showInformationMessage(
+        "Plantilla de API POST insertada correctamente."
       );
 
       editor.insertSnippet(snippet);
@@ -397,6 +405,9 @@ export function registerPutApiCommand(context: vscode.ExtensionContext) {
         ].join("\n")
       );
 
+      vscode.window.showInformationMessage(
+        "Plantilla de API PUT insertada correctamente."
+      );
       editor.insertSnippet(snippet);
     }
   );
@@ -533,6 +544,10 @@ export function registerDeleteApiCommand(context: vscode.ExtensionContext) {
           '}, \\$entidad."_${1:ruta_endpoint}_delete_${2:objeto}");',
           "",
         ].join("\n")
+      );
+
+      vscode.window.showInformationMessage(
+        "Plantilla de API DELETE insertada correctamente."
       );
 
       editor.insertSnippet(snippet);

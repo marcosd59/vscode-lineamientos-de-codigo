@@ -30,7 +30,7 @@ const diagnosticos = vscode.languages.createDiagnosticCollection(
 );
 
 const TrailingSpacesDecoration = vscode.window.createTextEditorDecorationType({
-  backgroundColor: "rgba(255, 0, 0, 0.45)",
+  backgroundColor: "rgba(255, 0, 0, 0.3)",
   borderRadius: "3px",
 });
 
@@ -653,12 +653,12 @@ class HelpAndFeedbackProvider implements vscode.TreeDataProvider<HelpItem> {
     return Promise.resolve([
       new HelpItem(
         "Get Started",
-        "https://github.com/marcosd59/lineamientos-de-codigo/blob/master/README.md",
+        "https://github.com/marcosd59/vscode-lineamientos-de-codigo/blob/master/README.md",
         "star"
       ),
       new HelpItem(
         "Report a Bug",
-        "https://github.com/marcosd59/lineamientos-de-codigo/issues/new/choose",
+        "https://github.com/marcosd59/vscode-lineamientos-de-codigo/issues/new/choose",
         "bug"
       ),
       new HelpItem(
@@ -668,7 +668,7 @@ class HelpAndFeedbackProvider implements vscode.TreeDataProvider<HelpItem> {
       ),
       new HelpItem(
         "View Open Issues",
-        "https://github.com/marcosd59/lineamientos-de-codigo/issues",
+        "https://github.com/marcosd59/vscode-lineamientos-de-codigo/issues",
         "issues"
       ),
       new HelpItem(

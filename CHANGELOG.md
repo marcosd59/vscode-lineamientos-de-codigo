@@ -4,6 +4,13 @@ All notable changes to the **lineamientos-de-codigo** extension will be document
 
 This project follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) and uses [Semantic Versioning](https://semver.org/).
 
+## [1.1.1] – 2025-04-17
+
+### Changed
+
+- Cambio de nombre del repositorio a `vscode-lineamientos-de-codigo`
+- Ajustes menores en mensajes visibles dentro de la extensión para mejorar la claridad
+
 ## [1.1.0] – 2025-04-16
 
 ### Added

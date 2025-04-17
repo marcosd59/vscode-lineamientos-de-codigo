@@ -1,17 +1,17 @@
 <p align="center">
-  <a title="Más sobre Lineamientos de Código" href="https://github.com/marcosd59/lineamientos-de-codigo">
-    <img src="https://raw.githubusercontent.com/marcosd59/lineamientos-de-codigo/master/assets/icon.png" alt="Lineamientos Logo" width="15%" />
+  <a title="Más sobre Lineamientos de Código" href="https://github.com/marcosd59/vscode-lineamientos-de-codigo">
+    <img src="https://raw.githubusercontent.com/marcosd59/vscode-lineamientos-de-codigo/master/assets/icon.png" alt="Lineamientos Logo" width="120" />
   </a>
 </p>
 
 <p align="center">
-  <a href="https://github.com/marcosd59/lineamientos-de-codigo/releases" target="_blank">
-    <img src="https://img.shields.io/github/v/release/marcosd59/lineamientos-de-codigo.svg?style=flat-square&label=Release&logo=github&logoColor=cacde2&labelColor=2c2c32&color=006daf" />
+  <a href="https://github.com/marcosd59/vscode-lineamientos-de-codigo/releases" target="_blank">
+    <img src="https://img.shields.io/github/v/release/marcosd59/vscode-lineamientos-de-codigo.svg?style=flat-square&label=Release&logo=github&logoColor=cacde2&labelColor=2c2c32&color=006daf" />
   </a>
   <a href="https://marketplace.visualstudio.com/items?itemName=marcosd59.lineamientos-de-codigo" target="_blank">
     <img src="https://img.shields.io/visual-studio-marketplace/i/marcosd59.lineamientos-de-codigo?style=flat-square&label=Installations&logo=visualstudiocode&logoColor=cacde2&labelColor=2c2c32&color=006daf" />
   </a>
-  <a href="https://github.com/marcosd59/lineamientos-de-codigo/actions" target="_blank">
+  <a href="https://github.com/marcosd59/vscode-lineamientos-de-codigo/actions" target="_blank">
     <img src="https://img.shields.io/github/checks-status/marcosd59/lineamientos-de-codigo/main.svg?style=flat-square&label=CI&logo=github&logoColor=cacde2&labelColor=2c2c32&color=006daf" />
   </a>
   <a href="https://code.visualstudio.com/updates/v1_39" target="_blank">
@@ -21,126 +21,104 @@
 
 # Lineamientos de Código
 
-**Lineamientos de Código** es una extensión para Visual Studio Code que permite formatear y validar código JavaScript con base en reglas de estilo predefinidas. Está pensada para desarrolladores y equipos que buscan mantener un código limpio, entendible y estandarizado de forma automática.
+**Lineamientos de Código** es una extensión para Visual Studio Code que formatea y valida automáticamente código JavaScript (y PHP con snippets), basado en reglas de estilo predefinidas.
+
+Ideal para equipos que desean mantener un código limpio, consistente y fácil de mantener sin esfuerzo manual.
 
 ---
 
-## Novedades
+## Funcionalidades principales
 
-- Validación de buenas prácticas en tiempo real
-- Formateo automático por archivo o por selección
-- Decoración visual de espacios innecesarios
-- Vista lateral de ayuda integrada
-- Comandos rápidos desde el menú contextual
+- Formateo automático con indentación personalizada.
+- Validación de buenas prácticas y errores comunes en tiempo real.
+- Decoración visual para espacios innecesarios.
+- Snippets para plantillas de APIs REST en PHP.
+- Vista lateral con ayuda integrada y accesos rápidos.
+- Comandos directos desde el menú contextual.
 
 ---
 
-## Funcionalidades
+## Demostraciones en acción
 
-### Formateo automático
+<p align="center">
+  <strong>Formateo automático de código</strong><br />
+  <img src="https://raw.githubusercontent.com/marcosd59/vscode-lineamientos-de-codigo/master/assets/images/formatter.gif" width="80%" />
+</p>
 
-- Aplicación inmediata de estilo con indentación de 4 espacios
-- Separación de funciones y métodos para mejorar la legibilidad
-- Compactación de estructuras como objetos, arrays y condicionales para evitar exceso de líneas
+<p align="center">
+  <strong>Activar/Desactivar validación automática</strong><br />
+  <img src="https://raw.githubusercontent.com/marcosd59/vscode-lineamientos-de-codigo/master/assets/images/on-off-validation.gif" width="80%" />
+</p>
 
-### Validación de estilo
+<p align="center">
+  <strong>Activar/Desactivar espacios al final de línea</strong><br />
+  <img src="https://raw.githubusercontent.com/marcosd59/vscode-lineamientos-de-codigo/master/assets/images/on-off-trailing-spaces.gif" width="80%" />
+</p>
 
-Detecta y marca automáticamente:
+<p align="center">
+  <strong>Insertar plantilla GET de API</strong><br />
+  <img src="https://raw.githubusercontent.com/marcosd59/vscode-lineamientos-de-codigo/master/assets/images/insert-get-api-template.gif" width="80%" />
+</p>
+---
 
-- Uso de `console.log` en entornos productivos
-- Llamadas a `alert()` en lugar de notificaciones menos invasivas
-- Uso de `fetch` en lugar de bibliotecas como `axios`
-- Variables o funciones que no siguen la convención `snake_case`
-- Estructuras condicionales `if/else` mal implementadas
-- Espacios en blanco innecesarios al final de línea
+## ¿Qué valida y corrige?
 
-### Snippets para plantillas de APIs
+- Uso de `console.log` en producción.
+- Llamadas innecesarias a `alert()`.
+- Reemplazo de `axios` por `fetch`.
+- Estilo incorrecto en nombres (`snake_case`).
+- `if/else` mal estructurados.
+- Espacios en blanco al final de línea.
 
-Ahorra tiempo al generar endpoints estándar en PHP con los nuevos _snippets_ de código incluidos en la extensión:
+---
 
-- `GET API Template` → Prefijo: `getApi`
-- `POST API Template` → Prefijo: `postApi`
-- `PUT API Template` → Prefijo: `putApi`
-- `DELETE API Template` → Prefijo: `deleteApi`
+## Snippets incluidos (PHP)
 
-Se pueden insertar manualmente escribiendo el prefijo en archivos `.php`, o desde la vista lateral integrada con accesos rápidos.
-Estas plantillas siguen los lineamientos de formato recomendados y están pensadas para facilitar el desarrollo de APIs CRUD de forma rápida y estandarizada.
+Ahorra tiempo generando endpoints REST estándar:
 
-### Decoración visual
+| Endpoint              | Prefijo     |
+| --------------------- | ----------- |
+| `GET API Template`    | `getApi`    |
+| `POST API Template`   | `postApi`   |
+| `PUT API Template`    | `putApi`    |
+| `DELETE API Template` | `deleteApi` |
 
-Resalta con color de fondo los espacios al final de cada línea para facilitar su eliminación antes de confirmar cambios en control de versiones.
+Puedes insertarlos manualmente o desde el panel lateral.
 
 ---
 
 ## Comandos disponibles
 
-| Comando                                          | Descripción                                                  |
-| ------------------------------------------------ | ------------------------------------------------------------ |
-| `lineamientos-de-codigo.formatJsCode`            | Formatea todo el archivo actual.                             |
-| `lineamientos-de-codigo.formatJsSelection`       | Formatea solo el bloque de código seleccionado.              |
-| `lineamientos-de-codigo.toggleValidacion`        | Activa o desactiva la validación automática.                 |
-| `lineamientos-de-codigo.toggleTrailingSpaces`    | Muestra u oculta el resaltado de espacios al final de línea. |
-| `lineamientos-de-codigo.insertGetApiTemplate`    | Inserta una plantilla básica para un endpoint GET en PHP.    |
-| `lineamientos-de-codigo.insertPostApiTemplate`   | Inserta una plantilla básica para un endpoint POST en PHP.   |
-| `lineamientos-de-codigo.insertPutApiTemplate`    | Inserta una plantilla básica para un endpoint PUT en PHP.    |
-| `lineamientos-de-codigo.insertDeleteApiTemplate` | Inserta una plantilla básica para un endpoint DELETE en PHP. |
+| Comando                   | Descripción                                    |
+| ------------------------- | ---------------------------------------------- |
+| `formatJsCode`            | Formatea todo el archivo.                      |
+| `formatJsSelection`       | Formatea solo el código seleccionado.          |
+| `toggleValidacion`        | Activa/Desactiva la validación.                |
+| `toggleTrailingSpaces`    | Muestra/Oculta los espacios al final de línea. |
+| `insertGetApiTemplate`    | Inserta plantilla GET (PHP).                   |
+| `insertPostApiTemplate`   | Inserta plantilla POST (PHP).                  |
+| `insertPutApiTemplate`    | Inserta plantilla PUT (PHP).                   |
+| `insertDeleteApiTemplate` | Inserta plantilla DELETE (PHP).                |
 
 ---
 
-## Instalación
+## Recursos de ayuda
 
-1. Clona o descarga este repositorio.
-2. Copia la carpeta en el directorio de extensiones de Visual Studio Code:
-   - Windows: `%USERPROFILE%\.vscode\extensions`
-   - macOS: `~/.vscode/extensions`
-   - Linux: `~/.vscode/extensions`
-3. Reinicia Visual Studio Code.
-4. La extensión estará activa automáticamente.
-
----
-
-## Configuración
-
-Puedes modificar las reglas directamente en el archivo principal editando el objeto `beautifyOptions`:
-
-```json
-"beautifyOptions": {
-  "indent_size": 4,
-  "space_in_paren": false,
-  "brace_style": "collapse"
-}
-```
-
----
-
-## Recomendaciones de uso
-
-- Activa la validación en tiempo real mientras trabajas en el código.
-- Utiliza el comando de formateo completo antes de realizar un commit.
-- Evita `console.log` en producción.
-- Prefiere `axios` para peticiones HTTP más limpias y manejables.
-
----
-
-## Ayuda
-
-La extensión incluye una vista lateral con enlaces rápidos a:
-
-- [Guía de inicio](https://github.com/marcosd59/lineamientos-de-codigo/blob/master/README.md)
-- [Reportar errores](https://github.com/marcosd59/lineamientos-de-codigo/issues/new/choose)
+- [Guía de inicio](https://github.com/marcosd59/vscode-lineamientos-de-codigo/blob/master/README.md)
+- [Reportar errores](https://github.com/marcosd59/vscode-lineamientos-de-codigo/issues/new/choose)
 - [Enviar comentarios](mailto:damian.marcospool@gmail.com)
-- [Ver issues abiertos](https://github.com/marcosd59/lineamientos-de-codigo/issues)
+- [Ver issues abiertos](https://github.com/marcosd59/vscode-lineamientos-de-codigo/issues)
 
 ---
 
 ## Contribuciones
 
-Las contribuciones, mejoras y sugerencias son bienvenidas.  
-Puedes abrir un [Issue](https://github.com/marcosd59/lineamientos-de-codigo/issues) o enviar un Pull Request directamente en el repositorio.
+¡Toda contribución es bienvenida!
+Puedes abrir un [Issue](https://github.com/marcosd59/vscode-lineamientos-de-codigo/issues) o enviar un Pull Request.
 
 ---
 
 ## Licencia
 
-Este proyecto está disponible bajo la licencia [MIT](LICENSE).  
+Este proyecto está disponible bajo la licencia [MIT](LICENSE).
 Puedes usarlo, modificarlo y redistribuirlo libremente.
