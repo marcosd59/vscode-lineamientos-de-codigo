@@ -77,12 +77,14 @@ Ideal para equipos que desean mantener un código limpio, consistente y fácil d
 
 Ahorra tiempo generando endpoints REST estándar:
 
-| Endpoint              | Prefijo     |
-| --------------------- | ----------- |
-| `GET API Template`    | `getApi`    |
-| `POST API Template`   | `postApi`   |
-| `PUT API Template`    | `putApi`    |
-| `DELETE API Template` | `deleteApi` |
+| Nombre del Snippet          | Prefijo            | Descripción                                          |
+| --------------------------- | ------------------ | ---------------------------------------------------- |
+| `GET API Template`          | `getApi`           | Endpoint GET en PHP                                  |
+| `POST API Template`         | `postApi`          | Endpoint POST en PHP                                 |
+| `PUT API Template`          | `putApi`           | Endpoint PUT en PHP                                  |
+| `DELETE API Template`       | `deleteApi`        | Endpoint DELETE en PHP                               |
+| `Vista completa de objetos` | `basic_view`       | Plantilla HTML+Vue para tabla, búsqueda y paginación |
+| `Controlador básico Vue`    | `basic_controller` | Controlador en Vue.js usando Axios y Bootstrap       |
 
 Puedes insertarlos manualmente o desde el panel lateral.
 

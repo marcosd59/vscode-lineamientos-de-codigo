@@ -171,6 +171,12 @@ export function activate(context: vscode.ExtensionContext) {
           }
         );
 
+        // Eliminar comentarios de línea en objetos
+        formattedCode = formattedCode.replace(
+          /(['"]?[A-Z_]+['"]?\s*:\s*['"]?.*?['"]?\s*),?\s*\/\/[^\n]*/gi,
+          "$1"
+        );
+
         // Compactar peticiones axios mal formateadas
         const axiosPattern =
           /(await\s+)?axios\s*\.\s*(get|post|put|delete)\s*\(\s*([\s\S]*?)\s*\)/gm;
@@ -206,6 +212,13 @@ export function activate(context: vscode.ExtensionContext) {
         vscode.window.showInformationMessage(
           "JavaScript formateado correctamente."
         );
+
+        // Actualizar el formato del archivo a 4 tabulaciones
+        const activeEditor = vscode.window.activeTextEditor;
+        if (activeEditor) {
+          activeEditor.options.tabSize = 4;
+          activeEditor.options.insertSpaces = true;
+        }
       } catch (error) {
         vscode.window.showErrorMessage(
           "Error al formatear el código: " + error + "."
@@ -329,6 +342,11 @@ export function activate(context: vscode.ExtensionContext) {
             const compactado = `${condicion.trim()} ? ${valorTrue.trim()} : ${valorFalse.trim()};`;
             return `${indent}${compactado}`;
           }
+        );
+
+        formattedCode = formattedCode.replace(
+          /(['"]?[A-Z_]+['"]?\s*:\s*['"]?.*?['"]?\s*),?\s*\/\/[^\n]*/gi,
+          "$1"
         );
 
         formattedCode = formattedCode.replace(
@@ -679,7 +697,6 @@ class HelpAndFeedbackProvider implements vscode.TreeDataProvider<HelpItem> {
     ]);
   }
 }
-
 class HelpItem extends vscode.TreeItem {
   constructor(label: string, url: string, codicon: string) {
     super(label);

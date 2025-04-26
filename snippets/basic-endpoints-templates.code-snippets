@@ -351,7 +351,7 @@
       "",
       "    print_r(json_encode(\\$response));",
       "}, \\$entidad.\"_${1:ruta_endpoint}_update_${2:objeto}\");",
-      "",
+      ""
     ],
     "description": "Plantilla base para endpoint PUT en una API con Medoo"
   },

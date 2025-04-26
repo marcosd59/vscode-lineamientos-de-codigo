@@ -4,6 +4,18 @@ All notable changes to the **lineamientos-de-codigo** extension will be document
 
 This project follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) and uses [Semantic Versioning](https://semver.org/).
 
+## [1.2.1] – 2025-04-26
+
+### Added
+
+- Nuevas plantillas **prediseñadas** de código (snippets) para proyectos Vue.js + Bootstrap:
+  - **Vista completa de objetos** (`basic_view`)
+  - **Controlador básico con Axios** (`basic_controller`)
+- Automatización del formateo, paginación, filtros y modales en proyectos Vue.js.
+- Mejora en la experiencia de desarrollo frontend para CRUDs rápidos.
+- Actualización en el `activationEvents` para activar la extensión también en proyectos PHP.
+- Corrección de activación automática en archivos `.js`, `.ts` y `.php`.
+
 ## [1.1.1] – 2025-04-17
 
 ### Changed
