@@ -4,6 +4,12 @@ All notable changes to the **lineamientos-de-codigo** extension will be document
 
 This project follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) and uses [Semantic Versioning](https://semver.org/).
 
+## [1.2.2] – 2025-04-26
+
+### Added
+
+- Se arregló un error en el formateo de código JavaScript que causaba problemas en la ejecución de scripts.
+
 ## [1.2.1] – 2025-04-26
 
 ### Added

@@ -171,12 +171,6 @@ export function activate(context: vscode.ExtensionContext) {
           }
         );
 
-        // Eliminar comentarios de línea en objetos
-        formattedCode = formattedCode.replace(
-          /(['"]?[A-Z_]+['"]?\s*:\s*['"]?.*?['"]?\s*),?\s*\/\/[^\n]*/gi,
-          "$1"
-        );
-
         // Compactar peticiones axios mal formateadas
         const axiosPattern =
           /(await\s+)?axios\s*\.\s*(get|post|put|delete)\s*\(\s*([\s\S]*?)\s*\)/gm;
@@ -342,11 +336,6 @@ export function activate(context: vscode.ExtensionContext) {
             const compactado = `${condicion.trim()} ? ${valorTrue.trim()} : ${valorFalse.trim()};`;
             return `${indent}${compactado}`;
           }
-        );
-
-        formattedCode = formattedCode.replace(
-          /(['"]?[A-Z_]+['"]?\s*:\s*['"]?.*?['"]?\s*),?\s*\/\/[^\n]*/gi,
-          "$1"
         );
 
         formattedCode = formattedCode.replace(
