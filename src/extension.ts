@@ -430,7 +430,7 @@ export function activate(context: vscode.ExtensionContext) {
         if (editor && trailingSpacesActivos) {
           TrailingSpaces(editor);
         }
-      }, 500);
+      }, 200);
     }),
 
     vscode.workspace.onDidSaveTextDocument((document) => {
