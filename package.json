@@ -2,7 +2,7 @@
   "name": "lineamientos-de-codigo",
   "displayName": "Lineamientos de Código",
   "description": "Extensión para Visual Studio Code que formatea y valida automáticamente tu código JavaScript según lineamientos de estilo predefinidos. También incluye plantillas para crear endpoints básicos en PHP.",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "publisher": "marcosd59",
   "license": "MIT",
   "icon": "assets/icon.png",
