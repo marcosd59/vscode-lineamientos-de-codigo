@@ -4,7 +4,13 @@ All notable changes to the **lineamientos-de-codigo** extension will be document
 
 This project follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) and uses [Semantic Versioning](https://semver.org/).
 
-## [1.2.2] – 2025-04-26
+## [1.2.3] – 2025-05-05
+
+### Added
+
+- Reduce debounce time for trailing spaces validation from 500ms to 200ms.
+
+## [1.2.2] – 2025-04-28
 
 ### Added
 
