@@ -4,6 +4,25 @@ All notable changes to the **lineamientos-de-codigo** extension will be document
 
 This project follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) and uses [Semantic Versioning](https://semver.org/).
 
+## [1.3.0] – 2025-07-20
+
+### Added
+
+- Nueva funcionalidad para generar un changelog a partir de transcripciones de reuniones.
+- Integración con Loom para incluir enlaces de video en los changelogs generados.
+- Comando para generar changelogs desde la barra de comandos de VSCode:
+  - `lineamientos-de-codigo.generateChangelog`
+  - Este comando solicita una transcripción y un enlace de Loom, y genera un changelog estructurado en Markdown.
+  - Incluye un ejemplo de uso en la documentación de la extensión.
+  - Mejora la experiencia de documentación y seguimiento de cambios en proyectos.
+  - Permite personalizar el formato del changelog generado.
+- Nueva funcionalidad para generar minutas de reuniones a partir de transcripciones.
+- Comando para generar minutas desde la barra de comandos de VSCode:
+  - `lineamientos-de-codigo.generateMinutePrompt`
+  - Este comando solicita una transcripción y genera una minuta estructurada en Markdown.
+  - Incluye un ejemplo de uso en la documentación de la extensión.
+  - Mejora la experiencia de documentación y seguimiento de decisiones en proyectos.
+
 ## [1.2.3] – 2025-05-05
 
 ### Added

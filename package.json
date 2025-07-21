@@ -2,7 +2,7 @@
   "name": "lineamientos-de-codigo",
   "displayName": "Lineamientos de Código",
   "description": "Extensión para Visual Studio Code que formatea y valida automáticamente tu código JavaScript según lineamientos de estilo predefinidos. También incluye plantillas para crear endpoints básicos en PHP.",
-  "version": "1.2.3",
+  "version": "1.3.0",
   "publisher": "marcosd59",
   "license": "MIT",
   "icon": "assets/icon.png",
@@ -43,7 +43,7 @@
       "lineamientosContainer": [
         {
           "id": "lineamientosJavaScriptView",
-          "name": "Formateador de JavaScript",
+          "name": "JavaScript Formatter",
           "visibility": "visible",
           "description": "Optimiza y reordena tu código JavaScript para mejorar su legibilidad y mantenimiento.",
           "icon": "assets/icon.svg"
@@ -53,6 +53,13 @@
           "name": "Basic Endpoints Templates",
           "visibility": "visible",
           "description": "Accesos rápidos para insertar plantillas de endpoints GET, POST, PUT y DELETE.",
+          "icon": "assets/icon.svg"
+        },
+        {
+          "id": "lineamientosContentGenerationView",
+          "name": "Content Generation",
+          "visibility": "collapsed",
+          "description": "Herramientas para generar prompts de minutas y changelogs a partir de transcripciones.",
           "icon": "assets/icon.svg"
         },
         {
@@ -73,6 +80,11 @@
       {
         "view": "lineamientosCrudApiView",
         "contents": "%lineamientosContainer.viewsWelcome.lineamientosCrudApiView.contents.whenEmpty%",
+        "when": "true"
+      },
+      {
+        "view": "lineamientosContentGenerationView",
+        "contents": "%lineamientosContainer.viewsWelcome.lineamientosContentGenerationView.contents.whenEmpty%",
         "when": "true"
       }
     ],
@@ -120,6 +132,18 @@
         "command": "lineamientos-de-codigo.insertDeleteApiTemplate",
         "category": "Endpoints",
         "title": "Clever: Insert DELETE API Template"
+      },
+      {
+        "command": "lineamientos-de-codigo.generateMinutePrompt",
+        "category": "Content Generation",
+        "title": "Clever: Generar prompt minuta",
+        "description": "Genera un prompt estructurado para crear una minuta a partir de una transcripción."
+      },
+      {
+        "command": "lineamientos-de-codigo.generateChangelog",
+        "category": "Content Generation",
+        "title": "Clever: Generar prompt changelog",
+        "description": "Genera un prompt estructurado para crear un changelog a partir de una transcripción."
       }
     ],
     "snippets": [

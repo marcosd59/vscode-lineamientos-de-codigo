@@ -1,6 +1,7 @@
 import * as vscode from "vscode";
 import { js as beautify } from "js-beautify";
 import * as crudApiCommands from "./commands/crudApiCommands";
+import * as contentGenerationCommands from "./commands/contentGenerationCommands";
 
 const beautifyOptions = {
   indent_size: 4,
@@ -408,6 +409,9 @@ export function activate(context: vscode.ExtensionContext) {
   crudApiCommands.registerPostApiCommand(context);
   crudApiCommands.registerPutApiCommand(context);
   crudApiCommands.registerDeleteApiCommand(context);
+
+  contentGenerationCommands.registerMinutePromptCommand(context);
+  contentGenerationCommands.registerChangelogCommand(context);
 
   let debounceTimer: NodeJS.Timeout | undefined;
 
